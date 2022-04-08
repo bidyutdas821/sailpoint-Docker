@@ -1,0 +1,38 @@
+version: "3.3"
+
+services:
+    
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      #- MYSQL_ROOT_USER=root
+      - MYSQL_HOST=db
+      #- MYSQL_DATABASE=identityiq
+
+    #network_mode: host
+    #ports:
+     # - 3306:3306 
+    #volumes:
+     # - ~/docker/persistant_data:/var/lib/mysql:rw
+    container_name: db
+    
+  web:
+    
+    container_name: iiq
+    depends_on:
+      - db
+    build: ~/docker/IIQ
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - MYSQL_HOST=db
+      #- MYSQL_ROOT_PASSWORD=password
+      #- MYSQL_USER=identityiq
+      - IIQ_VERSION=8.1
+    #links:
+     # - db
+    #network_mode: host
+     
